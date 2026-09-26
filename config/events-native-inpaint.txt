@@ -1,0 +1,5 @@
+This is an image editing task. Continue the existing artwork naturally, matching its style, perspective, lighting, and colors. Preserve the existing content.
+
+At every boundary between existing artwork and newly painted areas, the transition must be completely invisible, with no seam, dividing line, hard edge, or visible join anywhere in the image.
+{REF_STYLE_BLOCK}
+{USER_PROMPT_BLOCK}

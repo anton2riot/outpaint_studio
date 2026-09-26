@@ -1,0 +1,5 @@
+This is an image outpainting task. Paint the blank white areas to continue the existing artwork, matching style, perspective, lighting, and colors. Preserve existing content; fill edge to edge.
+
+At every boundary between existing artwork and newly painted areas, the transition must be completely invisible, with no seam, dividing line, hard edge, or visible join anywhere in the image.
+{REF_STYLE_BLOCK}
+{USER_PROMPT_BLOCK}
