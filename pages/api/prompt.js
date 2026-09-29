@@ -13,6 +13,6 @@ export default async function handler(req, res) {
     const prompt = await fs.readFile(path.join(process.cwd(), 'config', fileName), 'utf8');
     return res.status(200).json({ prompt: prompt.trim() });
   } catch {
-    return res.status(500).json({ error: 'Не удалось загрузить системный промпт' });
+    return res.status(500).json({ error: 'Failed to load the system prompt' });
   }
 }

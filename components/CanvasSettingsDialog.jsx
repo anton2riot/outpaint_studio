@@ -4,8 +4,8 @@ import { paintGridCanvas } from '../lib/infiniteCanvasUtils';
 import { useHoveredImagePaste } from '../lib/useHoveredImagePaste';
 
 const GRID_TYPE_OPTIONS = [
-  { value: 'dots', label: 'Точки' },
-  { value: 'isometric', label: 'Изометрия' },
+  { value: 'dots', label: 'Dots' },
+  { value: 'isometric', label: 'Isometric' },
 ];
 
 export default function CanvasSettingsDialog({
@@ -166,7 +166,7 @@ export default function CanvasSettingsDialog({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Настройки холста"
+      aria-label="Canvas settings"
       className="dialog-backdrop"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -174,13 +174,13 @@ export default function CanvasSettingsDialog({
     >
       <div className="dialog-panel settings-dialog">
         <div className="dialog-header">
-          <div className="dialog-title">Настройки</div>
-          <button type="button" onClick={onClose} aria-label="Закрыть" className="btn btn-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
+          <div className="dialog-title">Settings</div>
+          <button type="button" onClick={onClose} aria-label="Close" className="btn btn-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
         </div>
 
         <div className="settings-row">
           <div>
-            <div className="settings-label">Тип сетки</div>
+            <div className="settings-label">Grid type</div>
           </div>
           <div
             ref={gridTypeSelectRef}
@@ -191,7 +191,7 @@ export default function CanvasSettingsDialog({
               ref={gridTypeTriggerRef}
               type="button"
               className="settings-select-trigger"
-              aria-label="Тип сетки"
+              aria-label="Grid type"
               aria-haspopup="listbox"
               aria-expanded={isGridTypeOpen}
               aria-controls="grid-type-options"
@@ -201,7 +201,7 @@ export default function CanvasSettingsDialog({
               <span className="settings-select-chevron" aria-hidden="true" />
             </button>
             {isGridTypeOpen && (
-              <div id="grid-type-options" className="settings-select-menu" role="listbox" aria-label="Тип сетки">
+              <div id="grid-type-options" className="settings-select-menu" role="listbox" aria-label="Grid type">
                 {GRID_TYPE_OPTIONS.map((option) => (
                   <button
                     key={option.value}
@@ -221,7 +221,7 @@ export default function CanvasSettingsDialog({
 
         <div className="settings-row">
           <div>
-            <div className="settings-label">{gridType === 'isometric' ? 'Размер ячейки' : 'Размер сетки'}</div>
+            <div className="settings-label">{gridType === 'isometric' ? 'Cell size' : 'Grid size'}</div>
           </div>
           <label className="settings-number">
             <input
@@ -241,7 +241,7 @@ export default function CanvasSettingsDialog({
           <>
             <div className="settings-row settings-angle-row">
               <div>
-                <div className="settings-label">Угол сетки</div>
+                <div className="settings-label">Grid angle</div>
               </div>
               <div className="settings-angle-control">
                 <input
@@ -251,7 +251,7 @@ export default function CanvasSettingsDialog({
                   step="0.5"
                   value={gridAngle}
                   onChange={(event) => updateGridAngle(event.target.value)}
-                  aria-label="Угол изометрической сетки"
+                  aria-label="Isometric grid angle"
                 />
                 <label className="settings-number settings-angle-number">
                   <input
@@ -270,7 +270,7 @@ export default function CanvasSettingsDialog({
             </div>
 
             <div className="settings-preview-section">
-              <div className="settings-preview-title">Референс с сеткой</div>
+              <div className="settings-preview-title">Grid reference</div>
               <div className="settings-reference-wrap">
                 <div
                   ref={referencePasteTargetRef}
@@ -278,7 +278,7 @@ export default function CanvasSettingsDialog({
                   className={`settings-reference-card${isReferenceDragging ? ' is-dragging' : ''}${reference ? ' has-image' : ''}`}
                   role="button"
                   tabIndex="0"
-                  aria-label={reference ? `Заменить референс ${reference.name}` : 'Добавить референс'}
+                  aria-label={reference ? `Replace reference ${reference.name}` : 'Add reference'}
                   onClick={() => referenceInputRef.current?.click()}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') referenceInputRef.current?.click();
@@ -303,7 +303,7 @@ export default function CanvasSettingsDialog({
                       <canvas
                         ref={previewCanvasRef}
                         className="settings-reference-grid"
-                        aria-label="Предпросмотр изометрической сетки поверх референса"
+                        aria-label="Preview of the isometric grid over the reference"
                       />
                     </>
                   ) : (
@@ -311,8 +311,8 @@ export default function CanvasSettingsDialog({
                       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 002 2h10a2 2 0 002-2v-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
-                      <span>Перетащите изображение</span>
-                      <small>или нажмите / вставьте Ctrl+V</small>
+                      <span>Drop an image</span>
+                      <small>or click / paste with Ctrl+V</small>
                     </div>
                   )}
                 </div>
@@ -321,7 +321,7 @@ export default function CanvasSettingsDialog({
                     type="button"
                     className="settings-reference-remove"
                     onClick={clearReference}
-                    aria-label="Убрать референс"
+                    aria-label="Remove reference"
                   >
                     ×
                   </button>
@@ -334,12 +334,12 @@ export default function CanvasSettingsDialog({
                 hidden
                 onChange={(event) => useReferenceFile(event.target.files?.[0])}
               />
-              <div className="settings-preview-note">Референс используется только для сравнения и не сохраняется.</div>
+              <div className="settings-preview-note">The reference is only used for comparison and is not saved.</div>
             </div>
 
             <label className="settings-row settings-toggle">
               <div>
-                <div className="settings-label">Врисовывать сетку в референс</div>
+                <div className="settings-label">Draw grid on reference</div>
               </div>
               <input
                 type="checkbox"
@@ -353,7 +353,7 @@ export default function CanvasSettingsDialog({
         {gridType === 'dots' && (
           <label className="settings-row settings-toggle">
             <div>
-              <div className="settings-label">Магнитить к сетке</div>
+              <div className="settings-label">Snap to grid</div>
             </div>
             <input
               type="checkbox"
@@ -365,8 +365,8 @@ export default function CanvasSettingsDialog({
 
         <label className="settings-row settings-toggle">
           <div>
-            <div className="settings-label">Нативный инпейнт</div>
-            <div className="settings-description">Маска областей передаётся отдельно. Работает с моделями ChatGPT.</div>
+            <div className="settings-label">Native inpainting</div>
+            <div className="settings-description">The region mask is sent separately. Works with ChatGPT models.</div>
           </div>
           <input
             type="checkbox"
@@ -377,7 +377,7 @@ export default function CanvasSettingsDialog({
 
         <label className="settings-row settings-toggle">
           <div>
-            <div className="settings-label">Магнитить к объектам</div>
+            <div className="settings-label">Snap to objects</div>
           </div>
           <input
             type="checkbox"

@@ -1,17 +1,17 @@
 import React from 'react';
 
 /**
- * Панель с фиксированным размером в экранных px внутри scale(zoom) холста.
- * Внешняя оболочка — позиция в world units; внутренняя — counter-scale(1/zoom).
+ * Panel with a fixed screen-pixel size inside the canvas scale(zoom).
+ * The outer shell is positioned in world units; the inner shell uses counter-scale(1/zoom).
  *
  * @param {Object} props
  * @param {number} props.zoom
  * @param {'above'|'below'} [props.attach]
- * @param {number} props.frameWidth — ширина родителя в world units
- * @param {number} [props.minWidth] — мин. ширина панели в экранных px
- * @param {number} [props.screenWidth] — фиксированная ширина панели в экранных px
- * @param {boolean} [props.stretch] — растянуть панель до minWidth (нижние панели)
- * @param {number} [props.gap] — отступ от родителя в экранных px
+ * @param {number} props.frameWidth — parent width in world units
+ * @param {number} [props.minWidth] — minimum panel width in screen px
+ * @param {number} [props.screenWidth] — fixed panel width in screen px
+ * @param {boolean} [props.stretch] — stretch panel to minWidth (bottom panels)
+ * @param {number} [props.gap] — gap from parent in screen px
  * @param {boolean} [props.visible]
  * @param {(e: React.PointerEvent) => void} [props.onPointerDown]
  * @param {React.CSSProperties} [props.panelStyle]
@@ -65,7 +65,7 @@ export default function ScreenSpacePanel({
   );
 }
 
-/** Общие стили плавающих панелей в визуальном языке PassportHelper. */
+/** Shared floating-panel styles in the PassportHelper visual language. */
 export const STUDIO_PANEL_CHROME = {
   borderRadius: 16,
   border: '1px solid rgba(229,229,234,0.9)',

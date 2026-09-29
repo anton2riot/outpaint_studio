@@ -12,7 +12,7 @@ const BRUSH_COLORS = [
 
 const SELECT_TOOL = {
   id: 'select',
-  label: 'Выбор',
+  label: 'Select',
   icon: (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path d="M5 3l14 7-6 2-2 6-6-15z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
@@ -128,8 +128,8 @@ export default function StudioToolbar({
     >
       <button
         type="button"
-        data-tooltip="Загрузить изображение"
-        aria-label="Загрузить изображение"
+        data-tooltip="Upload image"
+        aria-label="Upload image"
         className="tool-button studio-tooltip"
         onClick={onUpload}
         disabled={uploadDisabled}
@@ -151,8 +151,8 @@ export default function StudioToolbar({
 
       <button
         type="button"
-        data-tooltip="Кисть"
-        aria-label={`Кисть, ${brushSize} px, ${brushColor}`}
+        data-tooltip="Brush"
+        aria-label={`Brush, ${brushSize} px, ${brushColor}`}
         aria-pressed={activeTool === 'draw'}
         className={`tool-button studio-tooltip${activeTool === 'draw' ? ' active' : ''}`}
         onClick={() => selectTool('draw')}
@@ -172,8 +172,8 @@ export default function StudioToolbar({
 
       <button
         type="button"
-        data-tooltip="Ластик"
-        aria-label="Ластик"
+        data-tooltip="Eraser"
+        aria-label="Eraser"
         aria-pressed={activeTool === 'erase'}
         className={`tool-button studio-tooltip${activeTool === 'erase' ? ' active' : ''}`}
         onClick={() => selectTool('erase')}
@@ -183,8 +183,8 @@ export default function StudioToolbar({
 
       <button
         type="button"
-        data-tooltip={tileToolDisabled ? 'Доступно для изометрической сетки' : 'Раскрашивание ячеек'}
-        aria-label="Раскрашивание ячеек"
+        data-tooltip={tileToolDisabled ? 'Available for the isometric grid' : 'Paint cells'}
+        aria-label="Paint cells"
         aria-pressed={activeTool === 'tile'}
         className={`tool-button studio-tooltip${activeTool === 'tile' ? ' active' : ''}`}
         onClick={() => selectTool('tile')}
@@ -197,12 +197,12 @@ export default function StudioToolbar({
         <div
           className="brush-popover"
           role="group"
-          aria-label={activeTool === 'erase' ? 'Настройки ластика' : activeTool === 'tile' ? 'Цвет ячеек' : 'Настройки кисти'}
+          aria-label={activeTool === 'erase' ? 'Eraser settings' : activeTool === 'tile' ? 'Cell colors' : 'Brush settings'}
           onPointerDown={(event) => event.stopPropagation()}
         >
           {activeTool !== 'tile' && <>
             <div className="brush-size-row">
-              <span>{activeTool === 'erase' ? 'Размер ластика' : 'Толщина'}</span>
+              <span>{activeTool === 'erase' ? 'Eraser size' : 'Width'}</span>
               <strong>{activeSize} px</strong>
             </div>
             <input
@@ -211,7 +211,7 @@ export default function StudioToolbar({
               max={maxSize}
               step="1"
               value={activeSize}
-              aria-label={activeTool === 'erase' ? 'Размер ластика' : 'Толщина кисти'}
+              aria-label={activeTool === 'erase' ? 'Eraser size' : 'Brush width'}
               className="brush-size-slider"
               onChange={(event) => {
                 const nextSize = Number(event.target.value);
@@ -228,7 +228,7 @@ export default function StudioToolbar({
                 type="button"
                 className={`brush-swatch${brushColor.toLowerCase() === color ? ' selected' : ''}`}
                 style={{ '--swatch-color': color }}
-                aria-label={`Цвет ${color}`}
+                aria-label={`Color ${color}`}
                 aria-pressed={brushColor.toLowerCase() === color}
                 onClick={() => onBrushColorChange?.(color)}
               >
@@ -239,7 +239,7 @@ export default function StudioToolbar({
                 )}
               </button>
             ))}
-            <label className="brush-custom-color" aria-label="Другой цвет">
+            <label className="brush-custom-color" aria-label="Custom color">
               <span aria-hidden>+</span>
               <input
                 type="color"
@@ -250,7 +250,7 @@ export default function StudioToolbar({
           </div>}
           {activeTool === 'tile' && <>
             <div className="brush-size-row">
-              <span>Размер кисти</span>
+              <span>Brush size</span>
               <strong>{tileBrushSize}×{tileBrushSize}</strong>
             </div>
             <input
@@ -259,17 +259,17 @@ export default function StudioToolbar({
               max="10"
               step="1"
               value={tileBrushSize}
-              aria-label="Размер кисти в ячейках"
+              aria-label="Brush size in cells"
               className="brush-size-slider"
               onChange={(event) => onTileBrushSizeChange?.(Number(event.target.value))}
               style={{ '--brush-slider-progress': `${((tileBrushSize - 1) / 9) * 100}%` }}
             />
-            <div className="tile-palette-title">Цвет ячейки</div>
+            <div className="tile-palette-title">Cell color</div>
             <div className="brush-palette">
               <button
                 type="button"
                 className={`brush-swatch tile-no-color${tileColor === null ? ' selected' : ''}`}
-                aria-label="Отсутствие цвета — удалить покраску"
+                aria-label="No color — remove paint"
                 aria-pressed={tileColor === null}
                 onClick={() => onTileColorChange?.(null)}
               >
@@ -281,7 +281,7 @@ export default function StudioToolbar({
                   type="button"
                   className={`brush-swatch${tileColor?.toLowerCase() === color ? ' selected' : ''}`}
                   style={{ '--swatch-color': color }}
-                  aria-label={`Цвет ячейки ${color}`}
+                  aria-label={`Cell color ${color}`}
                   aria-pressed={tileColor?.toLowerCase() === color}
                   onClick={() => onTileColorChange?.(color)}
                 >
@@ -300,8 +300,8 @@ export default function StudioToolbar({
       <button
         type="button"
         draggable
-        data-tooltip="Снимок — нажмите или перетащите на холст"
-        aria-label="Добавить рамку снимка в центр холста"
+        data-tooltip="Snapshot — click or drag onto the canvas"
+        aria-label="Add a snapshot frame to the center of the canvas"
         onClick={onSnapshot}
         onDragStart={(e) => {
           e.dataTransfer.setData(STUDIO_SNAPSHOT_DRAG_TYPE, '1');
@@ -315,8 +315,8 @@ export default function StudioToolbar({
       <button
         type="button"
         draggable
-        data-tooltip="Сохранение PNG — нажмите или перетащите на холст"
-        aria-label="Добавить рамку сохранения PNG в центр холста"
+        data-tooltip="PNG export — click or drag onto the canvas"
+        aria-label="Add a PNG export frame to the center of the canvas"
         onClick={onExport}
         onDragStart={(e) => {
           e.dataTransfer.setData(STUDIO_EXPORT_DRAG_TYPE, '1');

@@ -196,7 +196,7 @@ export default function SnapshotFrame({
         }
       `}</style>
 
-      {/* 1 экранный px снаружи области генерации (внутренний край stroke = граница frame) */}
+      {/* 1 screen px outside the generation area (inner stroke edge = frame boundary) */}
       <svg
         aria-hidden
         width={frame.width}
@@ -234,7 +234,7 @@ export default function SnapshotFrame({
         onPointerDown={(e) => e.stopPropagation()}
         panelStyle={topPanelStyle}
       >
-        <span className="studio-tooltip" data-tooltip="Модель" style={{ display: 'inline-flex', flexShrink: 0 }}>
+        <span className="studio-tooltip" data-tooltip="Model" style={{ display: 'inline-flex', flexShrink: 0 }}>
           <select
             value={frame.model || 'nb2'}
             onChange={(e) => onModelChange(e.target.value)}
@@ -246,7 +246,7 @@ export default function SnapshotFrame({
             ))}
           </select>
         </span>
-        <span className="studio-tooltip" data-tooltip="Разрешение" style={{ display: 'inline-flex', flexShrink: 0 }}>
+        <span className="studio-tooltip" data-tooltip="Resolution" style={{ display: 'inline-flex', flexShrink: 0 }}>
           <select
             value={frame.imageSize}
             onChange={(e) => onImageSizeChange(e.target.value)}
@@ -258,7 +258,7 @@ export default function SnapshotFrame({
             ))}
           </select>
         </span>
-        <span className="studio-tooltip" data-tooltip="Соотношение сторон" style={{ display: 'inline-flex', flexShrink: 0 }}>
+        <span className="studio-tooltip" data-tooltip="Aspect ratio" style={{ display: 'inline-flex', flexShrink: 0 }}>
           <select
             value={frame.aspectRatio}
             onChange={(e) => onAspectRatioChange(e.target.value)}
@@ -303,7 +303,7 @@ export default function SnapshotFrame({
                 opacity: isGenerating ? 0.5 : 1,
               }}
               className="studio-tooltip"
-              data-tooltip="Установить масштаб 100%"
+              data-tooltip="Set zoom to 100%"
             >
               {scalePercent}%
             </button>
@@ -329,9 +329,9 @@ export default function SnapshotFrame({
                 flexShrink: 0,
               }}
               className="studio-tooltip"
-              data-tooltip="Отменить генерацию"
+              data-tooltip="Cancel generation"
             >
-              Отмена
+              Cancel
             </button>
           )}
         </span>
@@ -356,8 +356,8 @@ export default function SnapshotFrame({
             flexShrink: 0,
           }}
           className="studio-tooltip"
-          data-tooltip="Удалить фрейм"
-          aria-label="Удалить фрейм"
+          data-tooltip="Delete frame"
+          aria-label="Delete frame"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 5v6m4-6v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -384,8 +384,8 @@ export default function SnapshotFrame({
             onBlur={onPromptBlur}
             disabled={isGenerating}
             placeholder={generationMode
-              ? 'Укажите особенности генерации'
-              : 'Укажите особенности генерации (опционально)'}
+              ? 'Describe the generation details'
+              : 'Describe the generation details (optional)'}
             style={{
               ...STUDIO_FIELD_STYLE,
               flex: 1,
@@ -418,7 +418,7 @@ export default function SnapshotFrame({
               boxSizing: 'border-box',
             }}
             className="studio-tooltip"
-            data-tooltip="4 параллельных варианта"
+            data-tooltip="4 parallel variants"
           >
             x4
           </button>
@@ -446,16 +446,16 @@ export default function SnapshotFrame({
               boxSizing: 'border-box',
             }}
           >
-            {generateLabel || (generationMode ? 'Сгенерировать' : 'Дорисовать')}
+            {generateLabel || (generationMode ? 'Generate' : 'Outpaint')}
           </button>
           {!hasGenerationContext && (
             <button
               type="button"
               onClick={onAddReferenceCard}
               disabled={isGenerating}
-              aria-label="Добавить контекст"
+              aria-label="Add context"
               className="studio-tooltip"
-              data-tooltip="Добавить изображение"
+              data-tooltip="Add image"
               style={{
                 width: 38,
                 height: 38,

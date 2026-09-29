@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   try {
     if (typeof req.query.id === 'string' && typeof req.query.file === 'string') {
       const image = await readGenerationJournalImage(storage, req.query.id, req.query.file);
-      if (!image) return res.status(404).json({ error: 'Изображение не найдено' });
+      if (!image) return res.status(404).json({ error: 'Image not found' });
       res.setHeader('Content-Type', image.mimeType);
       res.setHeader('Cache-Control', 'no-store');
       return res.status(200).send(image.buffer);
@@ -24,8 +24,8 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({ entries });
   } catch (error) {
-    if (error.code === 'ENOENT') return res.status(404).json({ error: 'Запись не найдена' });
+    if (error.code === 'ENOENT') return res.status(404).json({ error: 'Entry not found' });
     console.error('generation history:', error);
-    return res.status(500).json({ error: 'Не удалось загрузить историю генераций' });
+    return res.status(500).json({ error: 'Failed to load generation history' });
   }
 }

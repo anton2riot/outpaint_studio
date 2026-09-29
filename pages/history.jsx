@@ -38,7 +38,7 @@ function dayKey(value) {
 
 function formatDay(key) {
   const [year, month, day] = key.split('-').map(Number);
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat('en-US', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -46,7 +46,7 @@ function formatDay(key) {
 }
 
 function formatTime(value) {
-  return new Intl.DateTimeFormat('ru-RU', {
+  return new Intl.DateTimeFormat('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
@@ -65,9 +65,9 @@ function formatMoney(value, compact = false) {
 }
 
 function statusLabel(status) {
-  if (status === 'completed') return 'Готово';
-  if (status === 'error') return 'Ошибка';
-  return 'В процессе';
+  if (status === 'completed') return 'Completed';
+  if (status === 'error') return 'Error';
+  return 'In progress';
 }
 
 function modelName(entry) {
@@ -85,7 +85,7 @@ export default function GenerationHistoryPage() {
     fetch(`${BP}/api/generation-history`, { cache: 'no-store' })
       .then(async (response) => {
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Не удалось загрузить историю');
+        if (!response.ok) throw new Error(data.error || 'Failed to load history');
         if (active) setEntries(data.entries || []);
       })
       .catch((loadError) => {
@@ -135,44 +135,44 @@ export default function GenerationHistoryPage() {
   return (
     <>
       <Head>
-        <title>История генераций — Аутпейнт</title>
+        <title>Generation history — Outpaint Studio</title>
       </Head>
       <main className="history-page">
         <header className="history-header">
           <div className="history-header-inner">
-            <a className="history-back" href={`${BP}/`} aria-label="Вернуться на холст">
+            <a className="history-back" href={`${BP}/`} aria-label="Return to canvas">
               <ArrowLeftIcon />
-              <span>Холст</span>
+              <span>Canvas</span>
             </a>
             <div>
-              <h1>История генераций</h1>
-              <p>Стоимость запросов и расходы по дням</p>
+              <h1>Generation history</h1>
+              <p>Request costs and daily spending</p>
             </div>
           </div>
         </header>
 
         <div className="history-content">
-          {loading && <div className="history-message">Загружаем историю…</div>}
+          {loading && <div className="history-message">Loading history…</div>}
           {error && <div className="history-message history-message-error">{error}</div>}
 
           {!loading && !error && (
             <>
-              <section className="history-overview" aria-label="Общая статистика">
+              <section className="history-overview" aria-label="Overview">
                 <div className="history-overview-item history-overview-primary">
-                  <span>Учтённые расходы</span>
+                  <span>Tracked spending</span>
                   <strong>{formatMoney(totals.amount)}</strong>
                   <small>
-                    {totals.priced} из {entries.length} записей с ценой
-                    {totals.estimated ? ', включая оценки' : ''}
+                    {totals.priced} of {entries.length} priced entries
+                    {totals.estimated ? ', including estimates' : ''}
                   </small>
                 </div>
                 <div className="history-overview-item">
-                  <span>Генерации</span>
+                  <span>Generations</span>
                   <strong>{totals.completed}</strong>
-                  <small>из {entries.length}</small>
+                  <small>of {entries.length}</small>
                 </div>
                 <div className="history-overview-item">
-                  <span>Дни</span>
+                  <span>Days</span>
                   <strong>{days.length}</strong>
                   <small>{days[0] ? formatDay(days[0].key) : '—'}</small>
                 </div>
@@ -180,10 +180,10 @@ export default function GenerationHistoryPage() {
 
               <section className="history-section">
                 <div className="history-section-title">
-                  <h2>Расходы по дням</h2>
+                  <h2>Daily spending</h2>
                 </div>
                 {days.length === 0 ? (
-                  <div className="history-empty">Генераций пока нет</div>
+                  <div className="history-empty">No generations yet</div>
                 ) : (
                   <div className="daily-list">
                     {days.map((day) => (
@@ -197,10 +197,10 @@ export default function GenerationHistoryPage() {
                         </div>
                         <div className="daily-meta">
                           <span>
-                            {day.completed} готово{day.errors ? ` · ${day.errors} с ошибкой` : ''}
+                            {day.completed} completed{day.errors ? ` · ${day.errors} failed` : ''}
                             {day.priced === 0
-                              ? ' · без данных о цене'
-                              : day.priced < day.count ? ` · цена у ${day.priced}` : ''}
+                              ? ' · without pricing data'
+                              : day.priced < day.count ? ` · priced: ${day.priced}` : ''}
                           </span>
                           <strong>
                             {day.priced ? <>{day.estimated ? '≈ ' : ''}{formatMoney(day.amount, true)}</> : '—'}
@@ -214,15 +214,15 @@ export default function GenerationHistoryPage() {
 
               <section className="history-section history-log-section">
                 <div className="history-section-title">
-                  <h2>Все генерации <span>{entries.length}</span></h2>
+                  <h2>All generations <span>{entries.length}</span></h2>
                 </div>
                 <div className="generation-table">
                   <div className="generation-table-head" aria-hidden>
-                    <span>Дата</span>
-                    <span>Модель</span>
-                    <span>Параметры</span>
-                    <span>Статус</span>
-                    <span>Стоимость</span>
+                    <span>Date</span>
+                    <span>Model</span>
+                    <span>Parameters</span>
+                    <span>Status</span>
+                    <span>Cost</span>
                   </div>
                   {entries.map((entry) => {
                     const amount = entry.cost?.amountUsd;
@@ -243,12 +243,12 @@ export default function GenerationHistoryPage() {
                       </div>
                     );
                   })}
-                  {entries.length === 0 && <div className="history-empty">Генераций пока нет</div>}
+                  {entries.length === 0 && <div className="history-empty">No generations yet</div>}
                 </div>
               </section>
 
               <p className="history-footnote">
-                Суммы указаны в долларах США. «По usage» — расчёт по токенам ответа API; «оценка» — расчёт старой записи по модели и разрешению.
+                Amounts are in US dollars. “From usage” is calculated from API response tokens; “estimated” is calculated for older entries from the model and resolution.
               </p>
             </>
           )}

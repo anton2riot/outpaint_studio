@@ -162,8 +162,8 @@ export default function ExportFrame({
         </button>
         <button
           type="button"
-          aria-label="Удалить рамку сохранения"
-          data-tooltip="Удалить рамку"
+          aria-label="Delete export frame"
+          data-tooltip="Delete frame"
           className="studio-tooltip"
           onClick={(event) => {
             event.stopPropagation();

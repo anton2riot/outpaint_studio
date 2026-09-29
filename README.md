@@ -1,22 +1,22 @@
 # Outpaint Studio
 
-Отдельный редактор компоновки и аутпейнта: изображения на бесконечном холсте, рамки генерации, варианты, повторная генерация и автосохранение.
+A standalone composition and outpainting editor with images on an infinite canvas, generation frames, variants, regeneration, and autosave.
 
-## Запуск
+## Getting started
 
-1. Выполните `npm ci`.
-2. Выполните одну команду: `.\start-local.cmd`.
-3. Укажите личный ключ Gemini или OpenAI через «Задать ключи» в интерфейсе.
+1. Run `npm ci`.
+2. Run `.\start-local.cmd`.
+3. Enter your personal Gemini or OpenAI key through "Set API keys" in the app.
 
-Ключи хранятся в `localStorage` браузера. При генерации ключ выбранного провайдера передаётся серверному API только в теле запроса и далее самому провайдеру. Серверные ключи из `.env` не используются. Файл `.env` не включайте в поставку.
+Keys are stored in the browser's `localStorage`. During generation, the selected provider's key is sent to the server API only in the request body and then to that provider. Server keys from `.env` are not used. Do not include `.env` in a release.
 
-Команда очищает старые сборки и запускает сразу две независимые версии:
+The command clears old builds and starts two independent versions:
 
-- `http://localhost:3100` — стабильная production-версия;
-- `http://localhost:3101` — dev-версия с Hot Reload.
+- `http://localhost:3100` — stable production version;
+- `http://localhost:3101` — development version with Hot Reload.
 
-Для других портов: `.\start-local.cmd -StablePort 3200 -DevPort 3201`.
+To use other ports: `.\start-local.cmd -StablePort 3200 -DevPort 3201`.
 
-Повторный запуск команды переиспользует уже работающие серверы и безопасен при параллельном запуске несколькими агентами. Для принудительной очистки и перезапуска используйте `.\start-local.cmd -Force`.
+Running the command again reuses existing servers and is safe when several agents are working in parallel. Use `.\start-local.cmd -Force` to clear and restart both servers.
 
-Доска и изображения хранятся локально в `data/`.
+The board and images are stored locally in `data/`.

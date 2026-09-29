@@ -228,7 +228,7 @@ button { -webkit-tap-highlight-color: transparent; }
   transform: translate(-50%, 0) rotate(45deg) scale(1);
 }
 
-/* На левой панели подсказки раскрываются внутрь экрана. */
+/* Tooltips on the left panel open toward the center of the screen. */
 .tool-rail > .studio-tooltip[data-tooltip]::after {
   left: calc(100% + 12px);
   bottom: 50%;
@@ -769,7 +769,7 @@ textarea.form-control { resize: vertical; }
   .topbar-settings { margin-left: 0; }
 }
 
-/* История генераций */
+/* Generation history */
 .history-page {
   height: 100%;
   overflow: auto;

@@ -251,7 +251,7 @@ function StableLayerImage({ layer, onReady }) {
       try {
         await nextImage.decode();
       } catch (_) {
-        // onload уже подтверждает, что изображение готово к показу.
+        // onload already confirms that the image is ready to display.
       }
       if (cancelled) return;
       setDisplayedUrl(layer.url);
@@ -402,7 +402,7 @@ function LayerSelectionBar({
             disabled={variantLoading}
             style={iconBtn('#f2f2f7', 18, '#3c3c43')}
             className="studio-tooltip"
-            data-tooltip="Предыдущий вариант"
+            data-tooltip="Previous variant"
           >
             <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="15 18 9 12 15 6" />
@@ -419,7 +419,7 @@ function LayerSelectionBar({
             disabled={variantLoading}
             style={iconBtn('#f2f2f7', 18, '#3c3c43')}
             className="studio-tooltip"
-            data-tooltip="Следующий вариант"
+            data-tooltip="Next variant"
           >
             <svg width={9} height={9} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <polyline points="9 18 15 12 9 6" />
@@ -450,7 +450,7 @@ function LayerSelectionBar({
                 cursor: 'pointer',
               }}
               className="studio-tooltip"
-              data-tooltip="Установить масштаб 100%"
+              data-tooltip="Set zoom to 100%"
             >
               {scalePercent}%
             </button>
@@ -465,8 +465,8 @@ function LayerSelectionBar({
         }}
         style={iconBtn(cropActive ? '#007aff' : '#f2f2f7', 18, cropActive ? '#fff' : '#3c3c43')}
         className="studio-tooltip"
-        data-tooltip={cropActive ? 'Завершить кадрирование' : 'Кадрировать'}
-        aria-label={cropActive ? 'Завершить кадрирование' : 'Кадрировать'}
+        data-tooltip={cropActive ? 'Finish cropping' : 'Crop'}
+        aria-label={cropActive ? 'Finish cropping' : 'Crop'}
         aria-pressed={cropActive}
       >
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
@@ -496,9 +496,9 @@ function LayerSelectionBar({
             opacity: layer.regenerating ? 0.6 : 1,
           }}
           className="studio-tooltip"
-          data-tooltip="Перегенерировать с теми же входными данными"
+          data-tooltip="Regenerate with the same inputs"
         >
-          {layer.regenerating ? '...' : 'Перегенерировать'}
+          {layer.regenerating ? '...' : 'Regenerate'}
         </button>
       )}
       {cropped && (
@@ -510,8 +510,8 @@ function LayerSelectionBar({
           }}
           style={iconBtn('#e5f1ff', 18, '#007aff')}
           className="studio-tooltip"
-          data-tooltip="Сбросить кадрирование"
-          aria-label="Сбросить кадрирование"
+          data-tooltip="Reset crop"
+          aria-label="Reset crop"
         >
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
             <path d="M4 7v5h5M20 17v-5h-5M6.1 16.5A8 8 0 0 0 19 12M17.9 7.5A8 8 0 0 0 5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -526,8 +526,8 @@ function LayerSelectionBar({
         }}
         style={iconBtn(layer.locked ? '#1c1c1e' : '#f2f2f7', 18, layer.locked ? '#fff' : '#3c3c43')}
         className="studio-tooltip"
-        data-tooltip={layer.locked ? 'Разблокировать' : 'Заблокировать'}
-        aria-label={layer.locked ? 'Разблокировать изображение' : 'Заблокировать изображение'}
+        data-tooltip={layer.locked ? 'Unlock' : 'Lock'}
+        aria-label={layer.locked ? 'Unlock image' : 'Lock image'}
         aria-pressed={Boolean(layer.locked)}
       >
         {layer.locked ? (
@@ -550,7 +550,7 @@ function LayerSelectionBar({
         }}
         style={iconBtn('#f2f2f7', 18, '#3c3c43')}
         className="studio-tooltip"
-        data-tooltip="Скачать изображение"
+        data-tooltip="Download image"
       >
         <svg
           width={9}
@@ -575,8 +575,8 @@ function LayerSelectionBar({
           ...iconBtn('#ffe5e3', 18, '#ff3b30'),
         }}
         className="studio-tooltip"
-        data-tooltip="Удалить"
-        aria-label="Удалить изображение"
+        data-tooltip="Delete"
+        aria-label="Delete image"
       >
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 5v6m4-6v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -646,7 +646,7 @@ function MultiLayerSelectionBar({
         zIndex: 25,
       }}
     >
-      <span>{layers.length} изобр.</span>
+      <span>{layers.length} image{layers.length === 1 ? '' : 's'}</span>
       {commonSize && (
         <>
           <span style={{ color: '#c7c7cc' }}>·</span>
@@ -674,7 +674,7 @@ function MultiLayerSelectionBar({
                 cursor: 'pointer',
               }}
               className="studio-tooltip"
-              data-tooltip="Установить общий масштаб 100%"
+              data-tooltip="Set overall zoom to 100%"
             >
               {scalePercent}%
             </button>
@@ -689,8 +689,8 @@ function MultiLayerSelectionBar({
         }}
         style={iconBtn(allLocked ? '#1c1c1e' : '#f2f2f7', allLocked ? '#fff' : '#3c3c43')}
         className="studio-tooltip"
-        data-tooltip={allLocked ? 'Разблокировать все' : 'Заблокировать все'}
-        aria-label={allLocked ? 'Разблокировать выбранные изображения' : 'Заблокировать выбранные изображения'}
+        data-tooltip={allLocked ? 'Unlock all' : 'Lock all'}
+        aria-label={allLocked ? 'Unlock selected images' : 'Lock selected images'}
       >
         {allLocked ? (
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -712,8 +712,8 @@ function MultiLayerSelectionBar({
         }}
         style={iconBtn('#ffe5e3', '#ff3b30')}
         className="studio-tooltip"
-        data-tooltip="Удалить выбранные"
-        aria-label="Удалить выбранные изображения"
+        data-tooltip="Delete selected"
+        aria-label="Delete selected images"
       >
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 5v6m4-6v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -911,8 +911,8 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
   const selectedVariantIdsToPreloadKey = selectedVariantIdsToPreload.join('|');
 
   useEffect(() => {
-    // После открытия сохранённой доски в памяти есть только активный вариант.
-    // Подгружаем остальные заранее, чтобы переключатель не ждал сеть.
+    // After loading a saved board, only the active variant is in memory.
+    // Preload the others so switching variants does not wait on the network.
     if (!selectedVariantIdsToPreloadKey) return;
     selectedVariantIdsToPreloadKey.split('|').forEach((imageId) => {
       const image = new Image();
@@ -991,7 +991,7 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
   }, [onSnapshotFramesChange, snapshotFrames]);
 
   const setSnapshotReferenceFile = useCallback(async (frameId, referenceId, file) => {
-    if (!file?.type?.startsWith('image/')) throw new Error('Выберите изображение');
+    if (!file?.type?.startsWith('image/')) throw new Error('Choose an image');
     const imageId = createReferenceId('reference_image');
     await putStudioImage(imageId, file);
     onSnapshotFramesChange?.(snapshotFrames.map((frame) => (
@@ -1004,7 +1004,7 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
                     id: reference.id,
                     kind: 'upload',
                     imageId,
-                    name: file.name || 'Изображение',
+                    name: file.name || 'Image',
                   }
                 : reference
             )),
@@ -2685,9 +2685,9 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
             <button
               key={`pin_${frame.id}_${reference.id}`}
               type="button"
-              aria-label="Удалить связь"
+              aria-label="Delete link"
               className="studio-tooltip"
-              data-tooltip="Удалить связь"
+              data-tooltip="Delete link"
               onPointerDown={(event) => event.stopPropagation()}
               onClick={(event) => {
                 event.stopPropagation();
@@ -3096,7 +3096,7 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
         )}
       </div>
 
-      {/* Подсказка при пустом холсте */}
+      {/* Hint for an empty canvas */}
       {layers.length === 0 && drawings.length === 0 && tilePaints.length === 0 && snapshotFrames.length === 0 && exportFrames.length === 0 && (
         <div
           style={{
@@ -3109,11 +3109,11 @@ const InfiniteCanvas = forwardRef(function InfiniteCanvas({
           }}
         >
           <div className="empty-canvas-state">
-            Перетащите изображения с компьютера на холст
+            Drop images from your computer onto the canvas
             <br />
-            Рамку снимка — нажмите или перетащите иконку с панели слева
+            Add a snapshot frame by clicking or dragging its icon from the left toolbar
             <br />
-            <span>Колёсико — масштаб, перетаскивание фона — панорама</span>
+            <span>Scroll to zoom; drag the background to pan</span>
           </div>
         </div>
       )}

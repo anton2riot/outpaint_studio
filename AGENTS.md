@@ -1,90 +1,90 @@
-# Правила работы агентов
+# Agent guidelines
 
-Эти правила действуют для всего репозитория.
+These rules apply to the entire repository.
 
-## Основной принцип
+## Core principle
 
-- Запускайте минимальную проверку, достаточную для сделанного изменения.
-- Не запускайте сборку «на всякий случай» и после каждого изменённого файла.
-- Не перезапускайте уже работающие серверы без необходимости.
-- Не меняйте содержимое `data/` ради проверки. Если проверка временно изменила состояние доски, восстановите его.
+- Run only the minimum verification needed for the change.
+- Do not build "just in case" or after every changed file.
+- Do not restart running servers unless necessary.
+- Do not change `data/` for verification. If a check temporarily changes the board, restore it.
 
-## Установка зависимостей
+## Dependencies
 
-- Проект использует `npm` и `package-lock.json`.
-- При первом запуске без `node_modules` выполните `npm ci`.
-- Не переустанавливайте зависимости для каждой задачи.
-- После намеренного изменения зависимостей выполните `npm install`, чтобы обновить `package-lock.json`.
+- The project uses `npm` and `package-lock.json`.
+- On the first run without `node_modules`, run `npm ci`.
+- Do not reinstall dependencies for every task.
+- After an intentional dependency change, run `npm install` to update `package-lock.json`.
 
-## Локальный запуск
+## Local development
 
-Основная команда:
+Main command:
 
 ```powershell
 .\start-local.cmd
 ```
 
-Она поднимает:
+It starts:
 
-- `http://localhost:3101` — dev-версию с Hot Reload;
-- `http://localhost:3100` — стабильную production-версию.
+- `http://localhost:3101` — development version with Hot Reload;
+- `http://localhost:3100` — stable production version.
 
-Правила запуска:
+Startup rules:
 
-- Для разработки и проверки текущих правок всегда используйте `http://localhost:3101`.
-- Изменения CSS, JSX и большинства JS-файлов появляются на dev-сервере автоматически. Сборка и перезапуск не нужны.
-- Если оба сервера уже работают, повторно `start-local.cmd` не запускайте: используйте существующие.
-- `start-local.cmd -Force` останавливает оба сервера. Используйте его только при сломанном Hot Reload или зависшем сервере и только если это не помешает другим агентам.
-- Порт `3100` не отражает текущие изменения исходников до новой production-сборки. Не используйте его для проверки незавершённых правок.
-- Не запускайте отдельный `npm run dev`, если доступен dev-сервер на `3101`.
+- Always use `http://localhost:3101` to develop and verify current changes.
+- CSS, JSX, and most JS changes appear automatically on the development server. No build or restart is needed.
+- If both servers are already running, use them instead of running `start-local.cmd` again.
+- `start-local.cmd -Force` stops both servers. Use it only if Hot Reload is broken or a server is stuck, and only if it will not disrupt other agents.
+- Port `3100` does not reflect source changes until a new production build. Do not use it to verify unfinished changes.
+- Do not start a separate `npm run dev` if the development server is available on port `3101`.
 
-## Когда сборка не нужна
+## When a build is unnecessary
 
-Не запускайте `npm run build` для:
+Do not run `npm run build` for:
 
-- правок только в CSS;
-- изменений текста, отступов, цветов и размеров;
-- небольших изменений JSX-разметки;
-- локальных изменений обработчиков интерфейса;
-- документации;
-- промежуточных итераций одной задачи.
+- CSS-only changes;
+- changes to text, spacing, colors, or sizes;
+- small JSX markup changes;
+- local UI handler changes;
+- documentation;
+- intermediate iterations of one task.
 
-Для таких изменений достаточно проверить затронутый сценарий на dev-сервере. Для визуальных правок откройте нужное состояние интерфейса и проверьте его глазами.
+For these changes, verify the affected flow on the development server. For visual changes, open the relevant UI state and inspect it visually.
 
-## Когда сборка нужна
+## When a build is required
 
-Запустите одну production-сборку в конце задачи, если изменены:
+Run one production build at the end of the task if you changed:
 
-- `package.json` или `package-lock.json`;
-- `next.config.js` или скрипты запуска;
-- маршрутизация страниц;
-- границы клиентского и серверного кода;
-- импорты, экспорты или структура модулей в крупном рефакторинге;
-- API-маршруты или общая серверная инфраструктура с риском ошибки сборки.
+- `package.json` or `package-lock.json`;
+- `next.config.js` or startup scripts;
+- page routing;
+- client/server boundaries;
+- imports, exports, or module structure in a large refactor;
+- API routes or shared server infrastructure with build-error risk.
 
-Сборка также нужна, если пользователь явно попросил проверить production/release или если изменение готовится к выкладке.
+A build is also required if the user explicitly asks to verify production/release, or if the change is being prepared for deployment.
 
-Команда:
+Command:
 
 ```powershell
 npm run build
 ```
 
-Правила сборки:
+Build rules:
 
-- Запускайте её после завершения всех относящихся к задаче правок, а не после каждой правки.
-- Если после успешной сборки менялись только CSS или текст, повторная сборка не нужна.
-- Не запускайте несколько сборок параллельно: они используют общий каталог `.next`.
+- Run it after all related edits are complete, not after each edit.
+- If only CSS or text changed after a successful build, do not build again.
+- Do not run multiple builds in parallel: they share `.next`.
 
-## Линтер и тесты
+## Linting and tests
 
-- В проекте пока нет автоматических тестов и настроенного ESLint-конфига.
-- Не запускайте `npm run lint`: команда может перейти в интерактивную настройку.
-- Проверяйте изменённый сценарий вручную на dev-сервере.
-- Для API проверяйте только затронутый маршрут и не отправляйте реальные запросы к генеративным сервисам без необходимости.
+- The project has no automated tests or configured ESLint config yet.
+- Do not run `npm run lint`: it may start interactive setup.
+- Verify the changed flow manually on the development server.
+- For API changes, check only the affected route and avoid real generative-service requests unless needed.
 
-## Отчёт о выполнении
+## Completion report
 
-- Указывайте только фактически выполненные проверки.
-- Если сборка не запускалась, кратко поясните, что она не требовалась для данного типа изменения.
-- Не утверждайте, что проверка пройдена, если она не запускалась.
+- Report only checks that actually ran.
+- If no build ran, briefly explain why this type of change did not need one.
+- Do not claim a check passed if it did not run.

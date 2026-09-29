@@ -21,7 +21,7 @@ function openAiSize(imageSize, aspectRatio) {
   const size = STANDARD_SIZES_GPT_IMAGE_2.find((item) => (
     item.imageSize === imageSize && item.aspectRatio === aspectRatio
   ));
-  if (!size) throw new Error(`Неподдерживаемый размер GPT: ${imageSize} ${aspectRatio}`);
+  if (!size) throw new Error(`Unsupported GPT size: ${imageSize} ${aspectRatio}`);
   return `${size.width}x${size.height}`;
 }
 
@@ -32,22 +32,22 @@ function pngDimensions(buffer) {
 }
 
 function validateOpenAiMask(maskBuffer, firstImageBuffer, maskMimeType, requestedSize) {
-  if (maskMimeType !== 'image/png') throw new Error('Маска GPT должна быть PNG');
-  if (maskBuffer.length >= 4 * 1024 * 1024) throw new Error('Маска GPT должна быть меньше 4 МБ');
+  if (maskMimeType !== 'image/png') throw new Error('The GPT mask must be a PNG');
+  if (maskBuffer.length >= 4 * 1024 * 1024) throw new Error('The GPT mask must be smaller than 4 MB');
   const maskSize = pngDimensions(maskBuffer);
   const imageSize = pngDimensions(firstImageBuffer);
-  if (!maskSize || !imageSize) throw new Error('Маска GPT и первое изображение должны быть PNG');
+  if (!maskSize || !imageSize) throw new Error('The GPT mask and first image must be PNGs');
   if (maskSize.width !== imageSize.width || maskSize.height !== imageSize.height) {
     throw new Error(
-      `Размер маски ${maskSize.width}×${maskSize.height} не совпадает `
-      + `с первым изображением ${imageSize.width}×${imageSize.height}`,
+      `Mask size ${maskSize.width}×${maskSize.height} does not match `
+      + `the first image ${imageSize.width}×${imageSize.height}`,
     );
   }
   const [requestedWidth, requestedHeight] = requestedSize.split('x').map(Number);
   if (imageSize.width !== requestedWidth || imageSize.height !== requestedHeight) {
     throw new Error(
-      `Размер inpaint-входа ${imageSize.width}×${imageSize.height} не совпадает `
-      + `с запрошенным размером GPT ${requestedWidth}×${requestedHeight}`,
+      `Inpaint input size ${imageSize.width}×${imageSize.height} does not match `
+      + `the requested GPT size ${requestedWidth}×${requestedHeight}`,
     );
   }
 }
@@ -72,7 +72,7 @@ async function editWithOpenAI(request, images, mask, apiKey) {
   });
   const result = await response.json().catch(() => null);
   if (!response.ok) {
-    const error = new Error(result?.error?.message || `Ошибка OpenAI: ${response.status}`);
+    const error = new Error(result?.error?.message || `OpenAI error: ${response.status}`);
     error.status = response.status;
     throw error;
   }
@@ -102,7 +102,7 @@ async function generateWithGemini(params, apiKey) {
   }
   const response = await ai.models.generateContent(request);
   const image = imageFromGemini(response);
-  if (!image) throw new Error('Gemini не вернул изображение');
+  if (!image) throw new Error('Gemini did not return an image');
   return {
     mimeType: image.mimeType || 'image/png',
     data: Buffer.from(image.data, 'base64'),
@@ -117,7 +117,7 @@ async function generateWithOpenAI(params, apiKey) {
   const validImages = images.filter((image) => image?.data);
   const imageBuffers = validImages.map((image) => Buffer.from(image.data, 'base64'));
   if (mask?.data) {
-    if (imageBuffers.length === 0) throw new Error('Маску GPT нельзя отправить без изображения');
+    if (imageBuffers.length === 0) throw new Error('A GPT mask cannot be sent without an image');
     const maskBuffer = Buffer.from(mask.data, 'base64');
     const maskMimeType = mask.mimeType || 'image/png';
     validateOpenAiMask(maskBuffer, imageBuffers[0], maskMimeType, requestedSize);
@@ -134,7 +134,7 @@ async function generateWithOpenAI(params, apiKey) {
     ? await editWithOpenAI(request, validImages, mask, apiKey)
     : await client.images.generate(request);
   const data = result.data?.[0]?.b64_json;
-  if (!data) throw new Error('OpenAI не вернул изображение');
+  if (!data) throw new Error('OpenAI did not return an image');
   return {
     mimeType: 'image/png',
     data: Buffer.from(data, 'base64'),
@@ -151,15 +151,15 @@ export default async function handler(req, res) {
   try {
     const { kind, params, apiKey } = req.body || {};
     if (!params?.prompt || !Array.isArray(params.images)) {
-      return res.status(400).json({ error: 'Некорректный запрос генерации' });
+      return res.status(400).json({ error: 'Invalid generation request' });
     }
     if (
       typeof apiKey !== 'string' || !apiKey.trim() || apiKey.length > 2000 || /[\r\n\0]/.test(apiKey)
     ) {
-      return res.status(400).json({ error: 'Укажите корректный пользовательский API-ключ в Настройках' });
+      return res.status(400).json({ error: 'Enter a valid personal API key in Settings' });
     }
     if (kind !== 'openai-image' && kind !== 'gemini') {
-      return res.status(400).json({ error: 'Неподдерживаемая модель' });
+      return res.status(400).json({ error: 'Unsupported model' });
     }
     journalEntry = await startGenerationJournal(storage, kind, params);
     const result = kind === 'openai-image'
@@ -182,6 +182,6 @@ export default async function handler(req, res) {
       }
     }
     console.error('outpaint generation:', error);
-    return res.status(error.status || 500).json({ error: error.message || 'Ошибка генерации' });
+    return res.status(error.status || 500).json({ error: error.message || 'Generation failed' });
   }
 }

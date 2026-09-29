@@ -110,12 +110,12 @@ function ReferenceCard({
             }}
             style={{ display: 'none' }}
           />
-          <button type="button" disabled={disabled || busy} onClick={() => inputRefs.current.get(reference.id)?.click()} aria-label="Загрузить изображение" className="studio-tooltip" data-tooltip="Загрузить файл или вставить Ctrl+V" style={smallButtonStyle}>
+          <button type="button" disabled={disabled || busy} onClick={() => inputRefs.current.get(reference.id)?.click()} aria-label="Upload image" className="studio-tooltip" data-tooltip="Upload a file or paste with Ctrl+V" style={smallButtonStyle}>
             {busy ? '…' : <UploadIcon />}
           </button>
         </div>
       </ImageArea>
-      <button type="button" onClick={() => onRemove?.(reference.id)} aria-label="Удалить карточку" className="studio-tooltip" data-tooltip="Удалить" style={{ position: 'absolute', right: -5, top: -5, width: 17, height: 17, display: 'grid', placeItems: 'center', padding: 0, border: '1px solid #e5e5ea', borderRadius: '50%', background: '#fff', color: '#8e8e93', fontSize: 12, lineHeight: 1, cursor: 'pointer' }}>×</button>
+      <button type="button" onClick={() => onRemove?.(reference.id)} aria-label="Delete card" className="studio-tooltip" data-tooltip="Delete" style={{ position: 'absolute', right: -5, top: -5, width: 17, height: 17, display: 'grid', placeItems: 'center', padding: 0, border: '1px solid #e5e5ea', borderRadius: '50%', background: '#fff', color: '#8e8e93', fontSize: 12, lineHeight: 1, cursor: 'pointer' }}>×</button>
     </div>
   );
 }
@@ -150,7 +150,7 @@ export default function GenerationReferences({
           type="button"
           onClick={onOpenGlobalContext}
           className="studio-tooltip"
-          data-tooltip={globalContext.prompt || 'Общий контекст'}
+          data-tooltip={globalContext.prompt || 'Shared context'}
           style={{ ...cardStyle, cursor: 'pointer', textAlign: 'left' }}
         >
           <ImageArea src={globalContext.imageId ? studioImageUrl(globalContext.imageId) : null} />
@@ -178,7 +178,7 @@ export default function GenerationReferences({
         );
       })}
 
-      <button type="button" onClick={onAddCard} disabled={disabled} aria-label="Добавить контекст" className="studio-tooltip" data-tooltip="Добавить изображение" style={{ ...cardStyle, width: 38, flexBasis: 38, display: 'grid', placeItems: 'center', borderStyle: 'dashed', background: 'transparent', color: '#8e8e93', fontSize: 20, cursor: 'pointer' }}>+</button>
+      <button type="button" onClick={onAddCard} disabled={disabled} aria-label="Add context" className="studio-tooltip" data-tooltip="Add image" style={{ ...cardStyle, width: 38, flexBasis: 38, display: 'grid', placeItems: 'center', borderStyle: 'dashed', background: 'transparent', color: '#8e8e93', fontSize: 20, cursor: 'pointer' }}>+</button>
     </div>
   );
 }

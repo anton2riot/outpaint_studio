@@ -56,9 +56,9 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
       setDraft({ gemini: '', openai: '' });
       setRemove({ gemini: false, openai: false });
       if (requiredProvider && !saved[requiredProvider]) {
-        setError(`Укажите ключ ${requiredProvider === 'openai' ? 'OpenAI' : 'Google Gemini'} для выбранной модели.`);
+        setError(`Enter a ${requiredProvider === 'openai' ? 'OpenAI' : 'Google Gemini'} key for the selected model.`);
       } else {
-        setMessage('Ключи сохранены в этом браузере и уже используются для новых генераций.');
+        setMessage('Keys are saved in this browser and are already used for new generations.');
       }
     } catch (saveError) {
       setError(saveError.message);
@@ -71,7 +71,7 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Настройки API-ключей"
+      aria-label="API key settings"
       className="dialog-backdrop"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget && !saving) onClose();
@@ -80,14 +80,14 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
       <form onSubmit={save} className="dialog-panel api-keys-dialog">
         <div className="dialog-header">
           <div>
-            <div className="dialog-title">Задать ключи</div>
+            <div className="dialog-title">Set API keys</div>
             <div className="dialog-subtitle">
               {requiredProvider
-                ? `Для генерации укажите ключ ${requiredProvider === 'openai' ? 'OpenAI' : 'Google Gemini'}. Он сохранится только в этом браузере.`
-                : 'Хранятся только в этом браузере.'}
+                ? `To generate, enter a key for ${requiredProvider === 'openai' ? 'OpenAI' : 'Google Gemini'}. It will only be saved in this browser.`
+                : 'Stored only in this browser.'}
             </div>
           </div>
-          <button type="button" onClick={onClose} disabled={saving} aria-label="Закрыть" className="btn btn-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
+          <button type="button" onClick={onClose} disabled={saving} aria-label="Close" className="btn btn-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
         </div>
 
         {PROVIDERS.map((provider) => {
@@ -96,17 +96,17 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
             <div key={provider.id} className="api-key-field">
               <span className="api-key-label">
                 {provider.label}
-                {isConfigured && <span className="api-key-configured">задан</span>}
+                {isConfigured && <span className="api-key-configured">set</span>}
               </span>
               <div className="provider-row">
                 <input
                   type="password"
                   autoFocus={requiredProvider === provider.id}
                   autoComplete="off"
-                  aria-label={`API-ключ ${provider.label}`}
+                  aria-label={`API key for ${provider.label}`}
                   value={draft[provider.id]}
                   disabled={saving}
-                  placeholder={remove[provider.id] ? 'Ключ будет удалён' : isConfigured ? 'Введите новый ключ для замены' : provider.placeholder}
+                  placeholder={remove[provider.id] ? 'Key will be deleted' : isConfigured ? 'Enter a new key to replace it' : provider.placeholder}
                   onChange={(event) => {
                     const value = event.target.value;
                     setDraft((current) => ({ ...current, [provider.id]: value }));
@@ -126,7 +126,7 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
                     }}
                     className={`btn btn-sm${remove[provider.id] ? '' : ' btn-danger'}`}
                   >
-                    {remove[provider.id] ? 'Отменить' : 'Удалить'}
+                    {remove[provider.id] ? 'Cancel' : 'Delete'}
                   </button>
                 )}
               </div>
@@ -143,7 +143,7 @@ export default function ApiKeysDialog({ onClose, requiredProvider = null }) {
             disabled={saving}
             className="btn btn-primary"
           >
-            {saving ? 'Сохранение…' : 'Сохранить'}
+            {saving ? 'Saving…' : 'Save'}
           </button>
         </div>
       </form>

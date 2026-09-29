@@ -545,7 +545,7 @@ export default function OutpaintStudioPage() {
       } catch (err) {
 
         console.error('outpaint studio load:', err);
-        if (!cancelled) setBoardLoadError(err.message || 'Не удалось загрузить доску');
+        if (!cancelled) setBoardLoadError(err.message || 'Failed to load the board');
 
       } finally {
 
@@ -799,7 +799,7 @@ export default function OutpaintStudioPage() {
         return {
           ...f,
           status: 'error',
-          error: errors[0] || 'Ошибка генерации',
+          error: errors[0] || 'Generation failed',
           generatingTotal: undefined,
           generatingDone: undefined,
         };
@@ -807,7 +807,7 @@ export default function OutpaintStudioPage() {
       return {
         ...f,
         status: 'idle',
-        error: errors.length ? `Часть вариантов не сгенерирована (${errors.length})` : undefined,
+        error: errors.length ? `Some variants could not be generated (${errors.length})` : undefined,
         generatingTotal: undefined,
         generatingDone: undefined,
       };
@@ -840,7 +840,7 @@ export default function OutpaintStudioPage() {
       });
     } catch (err) {
       console.error('Studio job failed:', err);
-      errorMsg = err.message || 'Ошибка генерации';
+      errorMsg = err.message || 'Generation failed';
     }
     finishBatchJob(frameId, batchId, total, errorMsg);
   }, [applyVariantToBatch, finishBatchJob]);
@@ -943,7 +943,7 @@ export default function OutpaintStudioPage() {
   const uploadGlobalReference = useCallback(async (file) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      setGlobalContextError('Можно выбрать только изображение');
+      setGlobalContextError('Only image files can be selected');
       return;
     }
 
@@ -955,7 +955,7 @@ export default function OutpaintStudioPage() {
       setGlobalContext((prev) => ({ ...prev, imageId, imageName: file.name }));
     } catch (err) {
       console.error('Global reference upload:', err);
-      setGlobalContextError(err.message || 'Не удалось загрузить изображение');
+      setGlobalContextError(err.message || 'Failed to load the image');
     } finally {
       setGlobalReferenceUploading(false);
     }
@@ -1041,7 +1041,7 @@ export default function OutpaintStudioPage() {
 
       <Head>
 
-        <title>Аутпейнт — холст</title>
+        <title>Outpaint Studio — Canvas</title>
 
       </Head>
 
@@ -1051,10 +1051,10 @@ export default function OutpaintStudioPage() {
           <div className="app-menu" ref={menuRef}>
             <button
               type="button"
-              aria-label="Меню"
+              aria-label="Menu"
               aria-haspopup="menu"
               aria-expanded={menuOpen}
-              data-tooltip="Меню"
+              data-tooltip="Menu"
               onClick={() => setMenuOpen((open) => !open)}
               className={`btn btn-icon menu-trigger studio-tooltip${menuOpen ? ' active' : ''}`}
             >
@@ -1071,7 +1071,7 @@ export default function OutpaintStudioPage() {
                   }}
                 >
                   <HistoryIcon />
-                  История генераций
+                  Generation history
                 </button>
                 <button
                   type="button"
@@ -1082,7 +1082,7 @@ export default function OutpaintStudioPage() {
                   }}
                 >
                   <SettingsIcon />
-                  Настройки
+                  Settings
                 </button>
                 <button
                   type="button"
@@ -1094,7 +1094,7 @@ export default function OutpaintStudioPage() {
                   }}
                 >
                   <KeyIcon />
-                  Задать ключи
+                  Set API keys
                 </button>
               </div>
             )}
@@ -1111,22 +1111,22 @@ export default function OutpaintStudioPage() {
 
             disabled={boardLoading}
 
-            data-tooltip="Общий промпт и референс для всех новых генераций"
+            data-tooltip="Shared prompt and reference for all new generations"
 
             className={`btn studio-tooltip${globalContext.imageId || globalContext.prompt.trim() ? ' btn-context-active' : ''}`}
 
           >
 
-            <span>Контекст</span>
+            <span>Context</span>
             <span
               className={`context-indicator${globalContext.prompt.trim() ? ' active' : ''}`}
-              aria-label={globalContext.prompt.trim() ? 'Промпт задан' : 'Промпт не задан'}
+              aria-label={globalContext.prompt.trim() ? 'Prompt set' : 'No prompt set'}
             >
               <PromptIcon />
             </span>
             <span
               className={`context-indicator${globalContext.imageId ? ' active' : ''}`}
-              aria-label={globalContext.imageId ? 'Изображение задано' : 'Изображение не задано'}
+              aria-label={globalContext.imageId ? 'Image set' : 'No image set'}
             >
               <ImageIcon />
             </span>
@@ -1138,9 +1138,9 @@ export default function OutpaintStudioPage() {
             className={`zoom-indicator studio-tooltip${zoomPercent === 100 ? ' active' : ''}`}
             onClick={handleResetZoom}
             disabled={boardLoading}
-            data-tooltip="Масштаб холста. Нажмите: 1 px изображения = 1 px экрана"
+            data-tooltip="Canvas zoom. Click for 1 image px = 1 screen px"
           >
-            Холст {zoomPercent}%
+            Canvas {zoomPercent}%
           </button>
 
 
@@ -1198,7 +1198,7 @@ export default function OutpaintStudioPage() {
               <div role="alert" className="board-load-error">
                 <p>{boardLoadError}</p>
                 <button type="button" className="btn" onClick={() => window.location.reload()}>
-                  Повторить
+                  Retry
                 </button>
               </div>
             )}
@@ -1305,7 +1305,7 @@ export default function OutpaintStudioPage() {
 
             aria-modal="true"
 
-            aria-label="Общий контекст генерации"
+            aria-label="Shared generation context"
 
             className="dialog-backdrop"
 
@@ -1325,19 +1325,19 @@ export default function OutpaintStudioPage() {
 
                 <div>
 
-                  <div className="dialog-title">Общий контекст</div>
+                  <div className="dialog-title">Shared context</div>
 
-                  <div className="dialog-subtitle">Добавляется ко всем новым запросам.</div>
+                  <div className="dialog-subtitle">Added to all new requests.</div>
 
                 </div>
 
-                <button type="button" onClick={() => setGlobalContextOpen(false)} className="btn btn-icon" aria-label="Закрыть"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
+                <button type="button" onClick={() => setGlobalContextOpen(false)} className="btn btn-icon" aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 2.5l9 9m0-9l-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg></button>
 
               </div>
 
               <label className="form-label">
 
-                Инструкция для всех запросов
+                Instruction for all requests
 
                 <textarea
 
@@ -1345,7 +1345,7 @@ export default function OutpaintStudioPage() {
 
                   onChange={(event) => setGlobalContext((prev) => ({ ...prev, prompt: event.target.value }))}
 
-                  placeholder="Например: ориентируйся на стиль и палитру референса"
+                  placeholder="For example: follow the style and color palette of the reference"
 
                   rows={4}
 
@@ -1356,7 +1356,7 @@ export default function OutpaintStudioPage() {
               </label>
 
               <div ref={globalReferencePasteTargetRef} data-image-paste-target>
-              <div className="dialog-section-title">Дополнительное изображение</div>
+              <div className="dialog-section-title">Additional image</div>
 
               <input ref={globalReferenceInputRef} type="file" accept="image/*" onChange={handleGlobalReferenceFile} style={{ display: 'none' }} />
 
@@ -1364,28 +1364,28 @@ export default function OutpaintStudioPage() {
 
                 <div className="reference-card">
 
-                  <img src={`${BP}/api/outpaint-studio-image?id=${encodeURIComponent(globalContext.imageId)}`} alt="Дополнительный референс" />
+                  <img src={`${BP}/api/outpaint-studio-image?id=${encodeURIComponent(globalContext.imageId)}`} alt="Additional reference" />
 
-                  <span className="reference-name">{globalContext.imageName || 'Изображение выбрано'}</span>
+                  <span className="reference-name">{globalContext.imageName || 'Image selected'}</span>
 
-                  <button type="button" onClick={() => setGlobalContext((prev) => ({ ...prev, imageId: null, imageName: '' }))} className="btn btn-danger btn-sm">Убрать</button>
+                  <button type="button" onClick={() => setGlobalContext((prev) => ({ ...prev, imageId: null, imageName: '' }))} className="btn btn-danger btn-sm">Remove</button>
 
                 </div>
 
               ) : (
 
-                <div className="form-hint">Необязательно. Выберите файл или вставьте изображение из буфера (Ctrl+V).</div>
+                <div className="form-hint">Optional. Choose a file or paste an image from the clipboard (Ctrl+V).</div>
 
               )}
 
               <button type="button" disabled={globalReferenceUploading} onClick={() => globalReferenceInputRef.current?.click()} className="btn btn-accent" style={{ marginTop: '12px' }}>
 
-                {globalReferenceUploading ? 'Загрузка...' : globalContext.imageId ? 'Заменить изображение' : 'Добавить изображение'}
+                {globalReferenceUploading ? 'Uploading...' : globalContext.imageId ? 'Replace image' : 'Add image'}
 
               </button>
 
               {globalContext.imageId && (
-                <div className="form-hint">Чтобы заменить изображение, наведите сюда курсор и нажмите Ctrl+V.</div>
+                <div className="form-hint">To replace the image, hover here and press Ctrl+V.</div>
               )}
               </div>
 
